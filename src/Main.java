@@ -1,5 +1,3 @@
-import MathCalculator.Calculator;
-
 import java.util.Scanner;
 
 public class Main {
