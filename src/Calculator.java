@@ -22,26 +22,53 @@ public class Calculator {
         equation.delete(0, equation.length() - 1);
     }
 
+    public String getAnswer() {
+        return getAnswer(equation);
+    }
+
+    /*
     public double getAnswer() {
         return Double.parseDouble(getAnswer(equation));
     }
+    */
 
     private String getAnswer(StringBuilder str) {
-        double num1 = 0.0, num2 = 0.0;
+        String operator = "";
+        boolean done = false;
         int index = 0;
 
-        if (str.indexOf("*") != -1) {
-            index = str.indexOf("*");
-            num1 = Double.parseDouble(str.substring(index - 1, index));
-            num2 = Double.parseDouble(str.substring(index + 1, index + 2));
+        while (!done) {
+            System.out.println(str.toString());
 
-            str.replace(index - 1, index + 1, num1 * num2 + "");
+            if (str.indexOf("^") != -1) {
+                index = str.indexOf("^");
+
+                str.replace(index - 1, index + 2, substitute(str.substring(index - 1, index), "^", str.substring(index + 1, index + 2)));
+            } else if (str.indexOf("*") != -1) {
+                index = str.indexOf("*");
+
+                str.replace(index - 1, index + 2, substitute(str.substring(index - 1, index), "*", str.substring(index + 1, index + 2)));
+            } else if (str.indexOf("/") != -1) {
+                index = str.indexOf("/");
+
+                str.replace(index - 1, index + 2, substitute(str.substring(index - 1, index), "/", str.substring(index + 1, index + 2)));
+            } else if (str.indexOf("+") != -1) {
+                index = str.indexOf("+");
+
+                str.replace(index - 1, index + 2, substitute(str.substring(index - 1, index), "+", str.substring(index + 1, index + 2)));
+            } else if (str.indexOf("-") != -1) {
+                index = str.indexOf("-");
+
+                str.replace(index - 1, index + 2, substitute(str.substring(index - 1, index), "-", str.substring(index + 1, index + 2)));
+            } else {
+                done = true;
+            }
         }
 
         return str.toString();
     }
 
-    private String substitute (String[] str) {
+    private String substitute (String... str) {
         StringBuilder substitution = new StringBuilder();
 
         double num1 = Double.parseDouble(str[0]), num2 = Double.parseDouble(str[2]);
