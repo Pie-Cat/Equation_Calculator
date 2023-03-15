@@ -14,12 +14,36 @@ public class Operator {
         }
     }
 
-    public boolean isString () { return stringCheck; }
+    public Operator (double num) {
+        strValue = num + "";
+        dubValue = num;
+        stringCheck = false;
+    }
+
+    public boolean strCheck () {
+        return stringCheck;
+    }
+
+    public double getNum () {
+        return dubValue;
+    }
+
+    public String getStr () {
+        return strValue;
+    }
 
     public Object getValue () {
         if (stringCheck)
             return strValue;
         else
             return dubValue;
+    }
+
+    public boolean equals (Object o) {
+        return this.getValue().equals(getValue());
+    }
+
+    public String toString () {
+        return strValue;
     }
 }

@@ -8,6 +8,8 @@ public class Main {
 
         Calculator calc = new Calculator(input.nextLine());
 
-        System.out.println(calc.getAnswer());
+        calc.getAnswer();
+
+        System.out.println(calc);
     }
 }
