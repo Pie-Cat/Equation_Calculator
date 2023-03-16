@@ -39,8 +39,8 @@ public class Operator {
             return dubValue;
     }
 
-    public boolean equals (Object o) {
-        return this.getValue().equals(getValue());
+    public boolean equals (Object obj) {
+        return this.getValue().equals(obj.toString());
     }
 
     public String toString () {

@@ -10,56 +10,66 @@ public class Calculator {
     public Calculator(String formula) {
         equation = new ArrayList<>();
 
-        addEquation(formula);
+        addEquation(formula.split(" "));
     }
 
-    public void addEquation(String formula) {
-        String[] arr = formula.split(" ");
+    public void addEquation(String[] formula) {
+        for (String value : formula)
+            equation.add(new Operator(value));
 
-        for (String part : arr)
-            equation.add(new Operator(part));
+        /*
+        String temp = "";
+
+        for (String part : arr) {
+            try {
+                Double.parseDouble(part);
+                temp += part;
+            } catch (NumberFormatException e) {
+                if (temp != "") {
+                    equation.add(new Operator(temp));
+                    temp = "";
+                } else if (part != " ") {
+                    equation.add(new Operator(part));
+                }
+            }
+        }
+        */
     }
 
     public void resetEquation() {
         equation.clear();
     }
 
-    public double getAnswer () {
-        return getAnswer(equation);
+    public String getAnswer () {
+        return "\nThe answer is: " + getAnswer(equation) + "\n";
     }
 
-    private double getAnswer (ArrayList<Operator> eq) {
+    private double getAnswer (ArrayList<Operator> temp) {
+        ArrayList<Operator> eq = new ArrayList<>(temp);
+
         int index = -1;
 
-        System.out.println(eq.indexOf(new Operator("+")));
-
-        if (eq.contains("^")) {
-            index = eq.indexOf("^");
-            System.out.println(index + " | ^");
-        } else if (eq.contains("*")) {
-            index = eq.indexOf("*");
-            System.out.println(index + " | *");
-        } else if (eq.contains("/")) {
-            index = eq.indexOf("/");
-            System.out.println(index + " | /");
-        } else if (eq.contains("+")) {
-            index = eq.indexOf("+");
-            System.out.println(index + " | +");
-        } else if (eq.contains("-")) {
-            index = eq.indexOf("-");
-            System.out.println(index + " | -");
+        if (eq.contains(new Operator("^"))) {
+            index = eq.indexOf(new Operator("^"));
+        } else if (eq.contains(new Operator("*"))) {
+            index = eq.indexOf(new Operator("*"));
+        } else if (eq.contains(new Operator("/"))) {
+            index = eq.indexOf(new Operator("/"));
+        } else if (eq.contains(new Operator("+"))) {
+            index = eq.indexOf(new Operator("+"));
+        } else if (eq.contains(new Operator("-"))) {
+            index = eq.indexOf(new Operator("-"));
         }
-
-        System.out.println(index);
 
         if (index != -1) {
-            subVal(eq.get(index - 1), eq.get(index), eq.get(index + 1));
+            eq.set(index, new Operator(subVal(eq.get(index - 1), eq.get(index), eq.get(index + 1))));
+            eq.remove(index + 1);
+            eq.remove(index - 1);
 
-            for (int i = index - 1; i < index + 2; i++)
-                System.out.println(eq.get(i));
+            return getAnswer(eq);
         }
 
-        return 0.0;
+        return eq.get(0).getNum();
     }
 
     private double subVal (Operator... opr) {
@@ -67,7 +77,7 @@ public class Calculator {
 
         switch (opr[1].toString()) {
             case "^":
-                num = Math.pow(opr[0].getNum(), (Double) opr[2].getNum());
+                num = Math.pow(opr[0].getNum(), opr[2].getNum());
                 break;
             case "*":
                 num = opr[0].getNum() * opr[2].getNum();
@@ -87,7 +97,7 @@ public class Calculator {
     }
 
     public String toString() {
-        StringBuilder str = new StringBuilder("The current equation is:\n");
+        StringBuilder str = new StringBuilder("\nThe current equation is:\n");
 
         for (Operator opr : equation)
             str.append(opr + " ");
