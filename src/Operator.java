@@ -3,7 +3,19 @@ public class Operator {
     private String strValue;
     private double dubValue;
 
+    public Operator (StringBuilder strb) {
+        oprAdd(strb.toString());
+    }
+
     public Operator (String str) {
+        oprAdd(str);
+    }
+
+    public Operator (double num) {
+        oprAdd(num + "");
+    }
+
+    private void oprAdd (String str) {
         strValue = str;
 
         try {
@@ -12,12 +24,6 @@ public class Operator {
         } catch (NumberFormatException e) {
             stringCheck = true;
         }
-    }
-
-    public Operator (double num) {
-        strValue = num + "";
-        dubValue = num;
-        stringCheck = false;
     }
 
     public boolean strCheck () {
@@ -32,15 +38,8 @@ public class Operator {
         return strValue;
     }
 
-    public Object getValue () {
-        if (stringCheck)
-            return strValue;
-        else
-            return dubValue;
-    }
-
     public boolean equals (Object obj) {
-        return this.getValue().equals(obj.toString());
+        return this.getStr().equals(obj.toString());
     }
 
     public String toString () {

@@ -1,42 +1,49 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Calculator {
-    private ArrayList<Operator> equation;
-
-    public Calculator() {
-        equation = new ArrayList<>();
-    }
+    private final ArrayList<Operator> equation;
 
     public Calculator(String formula) {
         equation = new ArrayList<>();
 
-        addEquation(formula.split(" "));
+        formatEquation(formula.split(""));
     }
 
-    public void addEquation(String[] formula) {
-        for (String value : formula)
-            equation.add(new Operator(value));
+    public void addEquation (String formula) {
+        formatEquation(formula.split(""));
+    }
 
-        /*
-        String temp = "";
+    private void formatEquation (String[] formula) {
+        Scanner scan;
+        StringBuilder strb = new StringBuilder();
+        int index = 0;
 
-        for (String part : arr) {
-            try {
-                Double.parseDouble(part);
-                temp += part;
-            } catch (NumberFormatException e) {
-                if (temp != "") {
-                    equation.add(new Operator(temp));
-                    temp = "";
-                } else if (part != " ") {
-                    equation.add(new Operator(part));
+        for (int i = 0; i < formula.length; i++) {
+            switch (formula[i]) {
+                case "(", ")", "^", "*", "/", "+", "-" -> {
+                    equation.add(new Operator(formula[i]));
+                    formula[i] = " ";
                 }
+                default -> strb.append(formula[i]);
             }
         }
-        */
+
+        while (strb.length() > 0) {
+            System.out.println(strb);
+            scan = new Scanner(strb.toString());
+            equation.add(index, new Operator(scan.nextDouble()));
+
+            if (strb.indexOf(" ") != -1)
+                strb.delete(0, strb.indexOf(" ") + 2);
+            else
+                strb.delete(0, strb.length());
+
+            index += 2;
+        }
     }
 
-    public void resetEquation() {
+    public void resetEquation () {
         equation.clear();
     }
 
@@ -73,34 +80,22 @@ public class Calculator {
     }
 
     private double subVal (Operator... opr) {
-        double num = 0;
 
-        switch (opr[1].toString()) {
-            case "^":
-                num = Math.pow(opr[0].getNum(), opr[2].getNum());
-                break;
-            case "*":
-                num = opr[0].getNum() * opr[2].getNum();
-                break;
-            case "/":
-                num = opr[0].getNum() / opr[2].getNum();
-                break;
-            case "+":
-                num = opr[0].getNum() + opr[2].getNum();
-                break;
-            case "-":
-                num = opr[0].getNum() - opr[2].getNum();
-                break;
-        }
-
-        return num;
+        return switch (opr[1].toString()) {
+            case "^" -> Math.pow(opr[0].getNum(), opr[2].getNum());
+            case "*" -> opr[0].getNum() * opr[2].getNum();
+            case "/" -> opr[0].getNum() / opr[2].getNum();
+            case "+" -> opr[0].getNum() + opr[2].getNum();
+            case "-" -> opr[0].getNum() - opr[2].getNum();
+            default -> 0;
+        };
     }
 
     public String toString() {
         StringBuilder str = new StringBuilder("\nThe current equation is:\n");
 
         for (Operator opr : equation)
-            str.append(opr + " ");
+            str.append(opr).append(" ");
 
         return str.toString();
     }

@@ -10,8 +10,6 @@ public class Main {
 
         System.out.println(calc);
 
-        System.out.println(calc.getAnswer());
-
-        System.out.println(calc);
+        //System.out.println(calc.getAnswer());
     }
 }
