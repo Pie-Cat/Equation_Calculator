@@ -3,22 +3,21 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
+        Calculator calc = new Calculator();
 
         boolean done = false;
-
-        Calculator calc = new Calculator();
 
         System.out.println("Welcome to Nic's Calculator");
 
         while (!done) {
             System.out.println("\nWhat would you like to do?\nFor commands type in 'Help'");
 
-            switch (input.nextLine()) {
-                case "Calculator" -> {
+            switch (input.nextLine().toLowerCase()) {
+                case "calculator", "1" -> {
                     System.out.println("\nPlease input the equation to be calculated");
                     calc = new Calculator(input.nextLine());
                 }
-                case "Calculate" -> {
+                case "calculate", "2" -> {
                     if (calc.eqCheck()) {
                         System.out.println("\nPlease input the equation to be calculated");
                         calc = new Calculator(input.nextLine());
@@ -26,24 +25,25 @@ public class Main {
 
                     System.out.println(calc.getAnswer());
                 }
-                case "Equation" -> System.out.println(calc);
-                case "Reset", "Clear" -> {
+                case "equation", "3" -> System.out.println(calc);
+                case "reset", "clear", "4" -> {
                     calc.clearEq();
-                    System.out.println("Calculator cleared");
+                    System.out.println("\nCalculator cleared");
                 }
-                case "Help" -> System.out.println("""
+                case "help", "5" -> System.out.println("""
 
                         Help Page
-                        Calculator - Asks for equation
-                        Calculate - Solves given equation
-                        Equation - Returns given equation
-                        Reset/Clear - Clears calculator
-                        Help - Opens the help page
-                        Quit - Stops the calculator""");
-                case "Quit" -> {
+                        1 - Calculator - Asks for equation
+                        2 - Calculate - Solves given equation
+                        3 - Equation - Returns given equation
+                        4 - Reset/Clear - Clears calculator
+                        5 - Help - Opens the help page
+                        6 - Quit - Stops the calculator""");
+                case "quit", "6" -> {
                     System.out.println("\nHave a nice day!");
                     done = true;
                 }
+                default -> System.out.println("\nSorry, invalid input");
             }
         }
     }
