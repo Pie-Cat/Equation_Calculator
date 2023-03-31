@@ -43,6 +43,10 @@ public class Calculator {
                     equation.set(equation.size() - 1, new Operator(strb));
                     strb.delete(0, strb.length());
                 }
+                else if (!opr[1].strCheck() && opr[0].getStr().equals("(")) {
+                    equation.add(new Operator("*"));
+                    equation.add(opr[0]);
+                }
                 else {
                     equation.add(opr[0]);
                 }
@@ -109,8 +113,30 @@ public class Calculator {
         return eq.get(0).getNum();
     }
 
-    public void clearEq () {
+    private double subVal (Operator... opr) {
+        return switch (opr[1].toString()) {
+            case "^" -> Math.pow(opr[0].getNum(), opr[2].getNum());
+            case "*", "x" -> opr[0].getNum() * opr[2].getNum();
+            case "/" -> opr[0].getNum() / opr[2].getNum();
+            case "+" -> opr[0].getNum() + opr[2].getNum();
+            case "-" -> opr[0].getNum() - opr[2].getNum();
+            default -> 0;
+        };
+    }
+
+    public String clearEq () {
         equation.clear();
+
+        return "Calculator cleared";
+    }
+
+    public String getEq () {
+        StringBuilder str = new StringBuilder();
+
+        for (Operator opr : equation)
+            str.append(opr).append(" ");
+
+        return str.toString();
     }
 
     public String toString() {
@@ -121,22 +147,9 @@ public class Calculator {
         }
         else {
             str = new StringBuilder("\nThe current equation is:\n");
-
-            for (Operator opr : equation)
-                str.append(opr).append(" ");
+            str.append(getEq());
         }
+
         return str.toString();
-    }
-
-    private double subVal (Operator... opr) {
-
-        return switch (opr[1].toString()) {
-            case "^" -> Math.pow(opr[0].getNum(), opr[2].getNum());
-            case "*", "x" -> opr[0].getNum() * opr[2].getNum();
-            case "/" -> opr[0].getNum() / opr[2].getNum();
-            case "+" -> opr[0].getNum() + opr[2].getNum();
-            case "-" -> opr[0].getNum() - opr[2].getNum();
-            default -> 0;
-        };
     }
 }

@@ -1,49 +1,80 @@
-import java.util.Scanner;
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
+        String[] userOptions = {"New Equation", "Solve Equation", "Show Equation", "Edit Equation", "Clear Calculator",
+                "Help Page", "Quit"};
+        String response;
+        boolean done = false;
+        int opt = 5;
+
         Calculator calc = new Calculator();
 
-        boolean done = false;
-
-        System.out.println("Welcome to Nic's Calculator");
-
         while (!done) {
-            System.out.println("\nWhat would you like to do?\nFor commands type in 'Help'");
+            response = (String) JOptionPane.showInputDialog(null, "What do you want to do?",
+                    "Calculator Menu", JOptionPane.QUESTION_MESSAGE, null, userOptions, userOptions[opt]);
 
-            switch (input.nextLine().toLowerCase()) {
-                case "calculator", "1" -> {
-                    System.out.println("\nPlease input the equation to be calculated");
-                    calc = new Calculator(input.nextLine());
+            if (response == null) {
+              response = "Quit";
+            }
+
+            switch (response) {
+                case "New Equation" -> {
+                    opt = 1;
+
+                    calc = new Calculator(JOptionPane.showInputDialog(null,
+                        "Please input the equation to be calculated", "Calculator",
+                        JOptionPane.QUESTION_MESSAGE));
                 }
-                case "calculate", "2" -> {
+                case "Solve Equation" -> {
+                    opt = 3;
+
                     if (calc.eqCheck()) {
-                        System.out.println("\nPlease input the equation to be calculated");
-                        calc = new Calculator(input.nextLine());
+                        calc = new Calculator(JOptionPane.showInputDialog(null,
+                            "Please input the equation to be calculated","Calculator",
+                            JOptionPane.QUESTION_MESSAGE));
                     }
 
-                    System.out.println(calc.getAnswer());
+                    JOptionPane.showMessageDialog(null, calc.getAnswer(),"Calculator",
+                        JOptionPane.INFORMATION_MESSAGE);
                 }
-                case "equation", "3" -> System.out.println(calc);
-                case "reset", "clear", "4" -> {
-                    calc.clearEq();
-                    System.out.println("\nCalculator cleared");
-                }
-                case "help", "5" -> System.out.println("""
+                case "Show Equation" -> {
+                    opt = 1;
 
-                        Help Page
-                        1 - Calculator - Asks for equation
-                        2 - Calculate - Solves given equation
-                        3 - Equation - Returns given equation
-                        4 - Reset/Clear - Clears calculator
-                        5 - Help - Opens the help page
-                        6 - Quit - Stops the calculator""");
-                case "quit", "6" -> {
-                    System.out.println("\nHave a nice day!");
+                    JOptionPane.showMessageDialog(null, calc,"Calculator",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+                case "Edit Equation" -> {
+                    opt = 1;
+
+                    calc = new Calculator(JOptionPane.showInputDialog(null,"Equation Edit",
+                        calc.getEq()));
+                }
+                case "Clear Calculator" -> {
+                    opt = 0;
+
+                    JOptionPane.showMessageDialog(null, calc.clearEq(),"Calculator",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+                case "Help Page" -> {
+                    opt = 0;
+
+                    JOptionPane.showMessageDialog(null, """
+                    
+                        New Equation - Asks for new equation
+                        Solve Equation - Solves given equation
+                        Show Equation - Returns given equation
+                        Clear Calculator - Clears calculator
+                        Help Page - Opens the help page
+                        Quit/Cancel - Stops the calculator""",
+                        "Help Page", JOptionPane.INFORMATION_MESSAGE);
+                }
+                default -> {
+                    JOptionPane.showMessageDialog(null,"Have a nice day!","Calculator",
+                        JOptionPane.INFORMATION_MESSAGE);
+
                     done = true;
                 }
-                default -> System.out.println("\nSorry, invalid input");
             }
         }
     }
