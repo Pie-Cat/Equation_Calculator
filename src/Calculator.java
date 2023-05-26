@@ -2,8 +2,11 @@ import java.util.ArrayList;
 
 public class Calculator {
     private final ArrayList<Operator> equation;
+    private final String[] alphabet = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+                                       "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
+    private boolean runnable = true;
 
-    public Calculator () {
+    public Calculator ()  {
         equation = new ArrayList<>();
     }
 
@@ -52,14 +55,27 @@ public class Calculator {
                 }
             }
         }
+        for (Operator o : equation) {
+            for (String letter : alphabet) {
+                if (o.getStr().toLowerCase().equals(letter)) {
+                    runnable = false;
+                    break;
+                }
+            }
+        }
     }
 
-    public boolean eqCheck () {
-        return equation.isEmpty();
+    public boolean eqCheck ()  {
+        return !equation.isEmpty();
     }
 
-    public String getAnswer () {
-        return "\nThe answer is:\n" + getAnswer(equation);
+    public String getAnswer ()  {
+        if (runnable) {
+            return "\nThe answer is:\n" + getAnswer(equation);
+        }
+        else {
+            return "Not a valid equation";
+        }
     }
 
     private double getAnswer (ArrayList<Operator> temp) {
@@ -143,11 +159,11 @@ public class Calculator {
         StringBuilder str;
 
         if (eqCheck())  {
-            str = new StringBuilder("\nNo equation given");
-        }
-        else {
             str = new StringBuilder("\nThe current equation is:\n");
             str.append(getEq());
+        }
+        else {
+            str = new StringBuilder("\nNo equation given");
         }
 
         return str.toString();

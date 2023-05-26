@@ -3,15 +3,15 @@ public class Operator {
     private String strValue;
     private double dubValue;
 
-    public Operator (StringBuilder strb) {
+    public Operator (StringBuilder strb)  {
         oprAdd(strb.toString());
     }
 
-    public Operator (String str) {
+    public Operator (String str)  {
         oprAdd(str);
     }
 
-    public Operator (double num) {
+    public Operator (double num)  {
         oprAdd(num + "");
     }
 
@@ -26,23 +26,23 @@ public class Operator {
         }
     }
 
-    public boolean strCheck () {
+    public boolean strCheck ()  {
         return stringCheck;
     }
 
-    public double getNum () {
+    public double getNum ()  {
         return dubValue;
     }
 
-    public String getStr () {
+    public String getStr ()  {
         return strValue;
     }
 
-    public boolean equals (Object obj) {
+    public boolean equals (Object obj)  {
         return this.getStr().equals(obj.toString());
     }
 
-    public String toString () {
+    public String toString ()  {
         return strValue;
     }
 }
